@@ -55,6 +55,22 @@ app.get('/:id', (req, res) => {
   }
 })
 
+app.post('/:id', (req, res) => {
+  let id = req.params.id
+  let query = req.query
+  if (Object.keys(bins).includes(id)) {
+    let requests = bins[id]
+    if (query.inspect != undefined) {
+      res.render("bin", {requests: requests})
+    } else {
+      bins[id].push(req.headers)
+      res.send("Requesting...")
+    }
+  } else {
+    res.status(404).send("Sorry, we couldn't find that bin")
+  }
+})
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`)
 });
